@@ -1,0 +1,14 @@
+{
+  "Services": {
+    "ServiceAddress": "https://localhost:5001",
+    "Endpoints": {
+      "Author": "/api/author",
+      "Country": "/api/country",
+      "Book": "/api/book",
+      "ReadPaging": "/api/pagereading",
+      "Layout": "/api/layout"
+    }
+  }
+}
+
+

@@ -1,0 +1,11 @@
+services:
+  personal.libraryapi: 
+    hostname: Personal
+    container_name: Personal
+    image: ${DOCKER_REGISTRY-}personallibraryapi
+    build:
+      context: .
+      dockerfile: Personal.LibraryAPI/Dockerfile
+    ports:
+      - "5000:5000"
+      - "5001:5001" 
