@@ -9,7 +9,11 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Personal.WPFClient.Repositories.Base;
+using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Wrappers;
+using System.Windows.Media;
+using WPFClient.Configuration;
+using WPFCore.Window.Properties;
 
 namespace Personal.WPFClient.ViewModels;
 
@@ -17,9 +21,11 @@ public class AuthorsDialogViewModel : ViewModelDialogBase
 {
     private readonly IAuthorRepository myAuthorRepository;
 
-    public AuthorsDialogViewModel(IAuthorRepository authorRepository)
+    public AuthorsDialogViewModel(IAuthorRepository authorRepository, ILayoutRepository layoutRepository)
     {
         myAuthorRepository = authorRepository;
+        myLayoutRepository = layoutRepository;
+        Properties.Id = MenuAndDocumentIds.AuthorSelectMenuId;
         CustomDataUserControl = new AuthorSelectDialogView();
         try
         {

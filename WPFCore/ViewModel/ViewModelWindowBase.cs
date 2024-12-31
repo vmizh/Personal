@@ -1,13 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Input;
-using DevExpress.Data.Browsing;
 using DevExpress.Mvvm;
-using DevExpress.XtraPrinting.Native;
 using Personal.Domain.Entities;
 using Personal.WPFClient.Helper.Window;
 using Personal.WPFClient.Repositories.Base;
@@ -16,6 +12,7 @@ using WPFCore.Interfaces;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
 using UserControl = System.Windows.Controls.UserControl;
+using Win = Personal.WPFClient.Helper.Windows;
 using WindowStartupLocation = Personal.Domain.Helper.WindowStartupLocation;
 using WindowState = Personal.Domain.Helper.WindowState;
 
@@ -29,9 +26,6 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
     public ViewModelWindowBase()
     {
         Properties = new FormProperties();
-
-        CanDocumentClose = true;
-        CanDocumentRefresh = true;
 
         OnWindowClosingCommand = new DelegateCommand(
             async () => await OnWindowClosingAsync(),
@@ -53,7 +47,7 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
         DocumentDeleteCommand = new DelegateCommand(
             async () => await DocumentDeleteAsync(),
             () => CanDocumentDelete);
-        DocumentSaveCommand = new DelegateCommand(
+        DocumentSaveCommand = new AsyncCommand(
             async () => await DocumentSaveAsync(),
             () => CanDocumentSave);
         DocumentRefreshCommand = new AsyncCommand(
@@ -70,7 +64,6 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
             () => CanDocumentNewRequisite);
     }
 
-    
     #endregion
 
     #region Methods
@@ -81,10 +74,10 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
         {
             DataContext = this
         };
-        
+
         FormWindow.Show();
     }
-    
+
     #endregion
 
     #region Fields
@@ -107,7 +100,7 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
 
     protected virtual async Task OnWindowClosingAsync()
     {
-        Personal.WPFClient.Helper.Windows.OpenedWindow.Remove(FormWindow);
+        Win.OpenedWindow.Remove(FormWindow);
         try
         {
             if (LayoutSerializationService is not null && myLayoutRepository is not null)
@@ -130,7 +123,6 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
         {
             WindowManager.ShowError(ex);
         }
-
     }
 
     private WindowState GetWinState(System.Windows.WindowState state)
@@ -159,12 +151,12 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
 
     protected virtual async Task OnWindowLoadedAsync()
     {
-        Personal.WPFClient.Helper.Windows.OpenedWindow.Add(FormWindow);
+        Win.OpenedWindow.Add(FormWindow);
         try
         {
             if (LayoutSerializationService is not null && myLayoutRepository is not null)
             {
-                Properties.DefaultLayoutString =  LayoutSerializationService.Serialize();
+                Properties.DefaultLayoutString = LayoutSerializationService.Serialize();
                 var l = await ((BaseRepository<Layout>)myLayoutRepository).GetByIdAsync(Properties.Id);
                 if (l is null) return;
 
@@ -209,14 +201,14 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
     }
 
     public ICommand DocumentCloseCommand { get; set; }
-    public virtual bool CanDocumentClose { get; set; }
+    public virtual bool CanDocumentClose { get; set; } = true;
 
     public virtual async Task DocumentCloseAsync()
     {
         FormWindow?.Close();
     }
 
-    public ICommand DocumentSaveCommand { get; set; }
+    public AsyncCommand DocumentSaveCommand { get; set; }
     public virtual bool CanDocumentSave { get; set; }
 
     public virtual async Task DocumentSaveAsync()
@@ -225,7 +217,7 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
     }
 
     public AsyncCommand DocumentRefreshCommand { get; set; }
-    public virtual bool CanDocumentRefresh { get; set; }
+    public virtual bool CanDocumentRefresh { get; set; } = true;
 
     public virtual async Task DocumentRefreshAsync()
     {
@@ -277,6 +269,11 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
 
     [Display(AutoGenerateField = false)]
     public INotificationService KursNotyficationService => GetService<INotificationService>();
+
+    #endregion
+
+    #region Properties
+
 
     #endregion
 }

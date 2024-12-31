@@ -136,7 +136,7 @@ public class BooksWindowViewModel : ViewModelWindowBase
         };
         Books.Add(newItem);
         CurrentBook = newItem;
-        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository);
+        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository,myLayoutRepository);
         doc.LoadDocument(CurrentBook);
         doc.Show().ConfigureAwait(true);
     }
@@ -169,7 +169,7 @@ public class BooksWindowViewModel : ViewModelWindowBase
 
     public override async Task DocumentOpenAsync()
     {
-        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository);
+        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository,myLayoutRepository);
         doc.LoadDocument(CurrentBook);
         await doc.Show();
     }

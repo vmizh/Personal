@@ -207,8 +207,6 @@ public class ReadPagingViewModel : ViewModelWindowBase
         CurrentReadPaging.Model.Read.Remove(CurrentRead.Model);
         CurrentReadPaging.Read.Remove(CurrentRead); 
         Reads.Remove(CurrentRead);
-        if (CurrentReadPaging.State != StateEnum.New)
-            CurrentReadPaging.State = StateEnum.Changed;
     }
 
     private void AddPage()
@@ -239,7 +237,7 @@ public class ReadPagingViewModel : ViewModelWindowBase
 
     private void AddBook()
     {
-        var ctx = new BooksDialogViewModel(myBookRepository);
+        var ctx = new BooksDialogViewModel(myBookRepository,myLayoutRepository);
         var service = GetService<IDialogService>("DialogServiceUI");
         if (service.ShowDialog(MessageButton.OKCancel, "Запрос", ctx) == MessageResult.Cancel) return;
         var book = ctx.CurrentBook;
@@ -255,23 +253,21 @@ public class ReadPagingViewModel : ViewModelWindowBase
             Read = []
         })
         {
-            Name = book.Authors
+            Name = book.Authors,
+            State = StateEnum.New
         };
         PageReadings.Add(newRead);
+        CurrentReadPaging = newRead;
         if (DataControl is ReadPagingView view)
         {
-            view.TableViewBooks.MoveLastRow();
-            view.gridBooks.CurrentColumn = view.gridBooks.Columns[0];
+            int rowHandle = view.gridBooks.FindRowByValue("Id", newRead.Id);
+            view.TableViewBooks.FocusedRowHandle = rowHandle;
         }
-        CurrentReadPaging = newRead;
-
-        if (CurrentReadPaging.State != StateEnum.New)
-            CurrentReadPaging.State = StateEnum.Changed;
     }
 
     private void ChangeBook()
     {
-        var ctx = new BooksDialogViewModel(myBookRepository);
+        var ctx = new BooksDialogViewModel(myBookRepository, myLayoutRepository);
         var service = GetService<IDialogService>("DialogServiceUI");
         if (service.ShowDialog(MessageButton.OKCancel, "Запрос", ctx) == MessageResult.Cancel) return;
         var book = ctx.CurrentBook;

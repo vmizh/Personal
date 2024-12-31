@@ -42,6 +42,7 @@ app.ConfigureAuthorEndpoints();
 app.ConfigureBookEndpoints();
 app.ConfigurePageReadingEndpoints();
 app.ConfigureLayoutEndpoints();
+app.ConfigureBookPartitionEndpoints();
 app.UseHttpsRedirection();
 
 

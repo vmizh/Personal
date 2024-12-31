@@ -11,6 +11,7 @@ using Personal.Domain.Entities.Base;
 using Personal.WPFClient.Helper.Window;
 using Personal.WPFClient.Repositories;
 using Personal.WPFClient.Repositories.Base;
+using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views.Book;
 using Personal.WPFClient.Wrappers;
 using Personal.WPFClient.Wrappers.Base;
@@ -27,10 +28,11 @@ public class BookCardViewModel : ViewModelWindowBase
     private readonly IBookRepository myBookRepository;
     private RefName myCurrentAutor;
 
-    public BookCardViewModel(IAuthorRepository authorRepository, IBookRepository bookRepository)
+    public BookCardViewModel(IAuthorRepository authorRepository, IBookRepository bookRepository, ILayoutRepository layoutRepository)
     {
         myBookRepository = bookRepository;
         myAuthorRepository = authorRepository;
+        myLayoutRepository = layoutRepository;
         DataControl = new BookCardView();
         Properties.WindowTitle = "Книга ...";
         Properties.FormNameProperty = new FormNameProperty
@@ -99,7 +101,7 @@ public class BookCardViewModel : ViewModelWindowBase
 
     private void AddAuthor()
     {
-        var ctx = new AuthorsDialogViewModel(myAuthorRepository);
+        var ctx = new AuthorsDialogViewModel(myAuthorRepository,myLayoutRepository);
         var service = GetService<IDialogService>("DialogServiceUI");
         if (service.ShowDialog(MessageButton.OKCancel, "Запрос", ctx) == MessageResult.Cancel) return;
         var auth = ctx.CurrentAuthor;

@@ -8,4 +8,9 @@ public class Book : BaseReference
     public int? PublisherYear { set; get; }
     public string? Publisher { set; get; }
     public string? Annotation { set; get; }
+
+    public string? TableOfContents { set; get; }
+
+    public List<RefName>? Genres { set; get; } = [];
+
 }

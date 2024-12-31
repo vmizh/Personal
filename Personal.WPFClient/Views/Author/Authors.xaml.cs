@@ -2,14 +2,13 @@
 using DevExpress.Xpf.Editors.Settings;
 using DevExpress.Xpf.Grid;
 using Personal.WPFClient.ViewModels;
-using Personal.WPFClient.Views.Base;
 
 namespace Personal.WPFClient.Views;
 
 /// <summary>
 ///     Interaction logic for Authors.xaml
 /// </summary>
-public partial class Authors : IUpdateVisualObject
+public partial class Authors 
 {
     public Authors()
     {
@@ -32,12 +31,5 @@ public partial class Authors : IUpdateVisualObject
                 };
                 break;
         }
-    }
-
-
-    public void CloseEditors()
-    {
-        tableView.CloseEditor();
-        Dispatcher.Invoke(() => tableView.Focus());
     }
 }

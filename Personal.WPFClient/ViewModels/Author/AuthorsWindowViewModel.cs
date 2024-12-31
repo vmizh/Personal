@@ -8,8 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm;
-using DevExpress.Xpf.Core.Native;
-using DevExpress.Xpf.Grid;
 using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
 using Personal.WPFClient.Helper.Window;
@@ -17,7 +15,6 @@ using Personal.WPFClient.Repositories;
 using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views;
-using Personal.WPFClient.Views.Base;
 using Personal.WPFClient.Wrappers;
 using Personal.WPFClient.Wrappers.Base;
 using WPFClient.Configuration;
@@ -32,7 +29,8 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
     private readonly IAuthorRepository myAuthorRepository;
     private readonly ICountryRepository myCountryRepository;
 
-    public AuthorsWindowViewModel(IAuthorRepository authorRepository, ICountryRepository countryRepository, ILayoutRepository layoutRepository)
+    public AuthorsWindowViewModel(IAuthorRepository authorRepository, ICountryRepository countryRepository,
+        ILayoutRepository layoutRepository)
     {
         DataControl = new Authors();
         myAuthorRepository = authorRepository;
@@ -102,9 +100,6 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
 
     public ICommand AddCommand { get; private set; }
     public ICommand DeleteCommand { get; private set; }
-#pragma warning disable CS0169 // Field is never used
-    private AuthorWrapper myCurrentAuthor;
-#pragma warning restore CS0169 // Field is never used
 
     private void AddAuthor()
     {
@@ -121,7 +116,7 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
         if (DataControl is Authors view)
         {
             view.tableView.MoveLastRow();
-            view.gridControl.CurrentColumn = view.gridControl.Columns[0];  
+            view.gridControl.CurrentColumn = view.gridControl.Columns[0];
         }
     }
 
@@ -137,13 +132,11 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
         var countries = Task.Run(() => ((BaseRepository<Country>)myCountryRepository).GetAllAsync()).Result;
         if (countries is null) return;
         foreach (var cntr in countries.OrderBy(_ => _.Name))
-        {
             Countries.Add(new RefName
             {
                 Id = cntr._id,
-                Name = cntr.Name,
+                Name = cntr.Name
             });
-        }
     }
 
     public override async Task DocumentRefreshAsync()
@@ -168,29 +161,28 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
         }
         finally
         {
-            if(FormWindow is not null)
+            if (FormWindow is not null)
                 FormWindow.loadingIndicator.Visibility = Visibility.Hidden;
         }
     }
 
-    public override bool CanDocumentSave => Authors != null && (Authors.Count > 0 &&
-                                            Authors.Any(_ => _.State != StateEnum.NotChanged) &&
-                                            Authors.All(_ => !string.IsNullOrWhiteSpace(_.Name)) || DeletedAuthors.Any());
-
+    public override bool CanDocumentSave => Authors != null && ((Authors.Count > 0 &&
+                                                                 Authors.Any(_ => _.State != StateEnum.NotChanged) &&
+                                                                 Authors.All(_ =>
+                                                                     !string.IsNullOrWhiteSpace(_.Name))) ||
+                                                                DeletedAuthors.Any());
+    
     public override async Task DocumentSaveAsync()
     {
         try
         {
+            if (FormWindow is not null)
+                FormWindow.loadingIndicator.Visibility = Visibility.Visible;
             if (DeletedAuthors.Any())
-            {
                 foreach (var auth in DeletedAuthors)
-                {
                     await ((BaseRepository<Author>)myAuthorRepository).DeleteAsync(auth.Model);
-                }
-            }
 
             foreach (var auth in Authors.Where(_ => _.State != StateEnum.NotChanged))
-            {
                 switch (auth.State)
                 {
                     case StateEnum.Changed:
@@ -200,19 +192,18 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
                         await ((BaseRepository<Author>)myAuthorRepository).CreateAsync(auth.Model);
                         break;
                 }
-            }
 
             DeletedAuthors.Clear();
-            foreach (var auth in Authors)
-            {
-                auth.State = StateEnum.NotChanged;
-            }
-
-           
+            foreach (var auth in Authors) auth.State = StateEnum.NotChanged;
         }
         catch (Exception ex)
         {
             WindowManager.ShowError(ex);
+        }
+        finally
+        {
+            if (FormWindow is not null)
+                FormWindow.loadingIndicator.Visibility = Visibility.Hidden;
         }
     }
 

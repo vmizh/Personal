@@ -14,7 +14,7 @@ public interface IDocumentCommands
     bool CanDocumentClose { set; get; }
     Task DocumentCloseAsync();
 
-    ICommand DocumentSaveCommand { set; get; }
+    AsyncCommand DocumentSaveCommand { set; get; }
     bool CanDocumentSave { set; get; }
     Task DocumentSaveAsync();
 

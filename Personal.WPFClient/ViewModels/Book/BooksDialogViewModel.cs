@@ -12,6 +12,8 @@ using Personal.WPFClient.Repositories.Base;
 using WPFCore.ViewModel;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Personal.WPFClient.Repositories.Layout;
+using WPFClient.Configuration;
 
 namespace Personal.WPFClient.ViewModels;
 
@@ -19,9 +21,11 @@ public class BooksDialogViewModel : ViewModelDialogBase
 {
     private readonly IBookRepository myBookRepository;
 
-    public BooksDialogViewModel(IBookRepository bookRepository)
+    public BooksDialogViewModel(IBookRepository bookRepository, ILayoutRepository layoutRepository)
     {
         myBookRepository = bookRepository;
+        myLayoutRepository = layoutRepository;
+        Properties.Id = MenuAndDocumentIds.BookSelectMenuId;
         CustomDataUserControl = new BookSelectDialogView();
         try
         {

@@ -16,6 +16,7 @@ public static class ServiceRegistration
         services.AddScoped<IBookService, BookService>();
         services.AddScoped<IReadPagingService, ReadPagingService>();
         services.AddScoped<ILayoutService, LayoutService>();
+        services.AddScoped<IBookPartitionsService, BookPartitionsService>();
 
         return services;
     }
