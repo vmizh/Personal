@@ -119,9 +119,6 @@ public class BooksWindowViewModel : ViewModelWindowBase
     }
     public ICommand AddCommand { get; private set; }
     public ICommand DeleteCommand { get; private set; }
-#pragma warning disable CS0169 // Field is never used
-    private AuthorWrapper myCurrentAuthor;
-#pragma warning restore CS0169 // Field is never used
 
     private void AddBook()
     {
@@ -129,7 +126,8 @@ public class BooksWindowViewModel : ViewModelWindowBase
         {
             _id = Guid.NewGuid(),
             Name = null,
-            AuthorList = []
+            AuthorList = [],
+            Genres = []
         })
         {
             State = StateEnum.New

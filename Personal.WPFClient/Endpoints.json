@@ -6,7 +6,9 @@
       "Country": "/api/country",
       "Book": "/api/book",
       "ReadPaging": "/api/pagereading",
-      "Layout": "/api/layout"
+      "Layout": "/api/layout",
+      "BookPartition": "/api/bookpartition"
+
     }
   }
 }

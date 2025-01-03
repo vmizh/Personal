@@ -21,7 +21,6 @@ using WPFClient.Configuration;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
-using Windows = Personal.WPFClient.Helper.Windows;
 using WindowStartupLocation = Personal.Domain.Helper.WindowStartupLocation;
 using WindowState = Personal.Domain.Helper.WindowState;
 
@@ -31,17 +30,20 @@ public class MainViewModel : ViewModelWindowBase
 {
     private readonly IAuthorRepository myAuthorRepository;
     private readonly IBookRepository myBookRepository;
-    private readonly ICountryRepository myCountryRepository;
-    private readonly DocumentOpen myDocumentOpen;
+    private readonly ICountryRepository myCountryRepository; 
     private readonly IReadPagingRepository myReadPagingRepository;
-    private readonly ServiceConfigurationBuilder myServiceConfig;
+    private readonly IBookPartitionRepository myBookPartRepository;
 
+
+
+    private readonly DocumentOpen myDocumentOpen;
+    private readonly ServiceConfigurationBuilder myServiceConfig;
     private readonly RedisManagerPool redisManager;
 
     public MainViewModel(ServiceConfigurationBuilder serviceConfig, IAuthorRepository authorRepository,
         ICountryRepository countryRepository, IBookRepository bookRepository,
         IReadPagingRepository readPagingRepository,
-        ILayoutRepository layoutRepository)
+        ILayoutRepository layoutRepository, IBookPartitionRepository bookPartRepository)
     {
         Properties.Name = "Персональная база";
         Properties.Id = Guid.Parse("{3378BDFE-F66B-4B39-B5A6-016DF88FEC3A}");
@@ -57,9 +59,10 @@ public class MainViewModel : ViewModelWindowBase
         myCountryRepository = countryRepository;
         myBookRepository = bookRepository;
         myReadPagingRepository = readPagingRepository;
+        myBookPartRepository = bookPartRepository;
         myLayoutRepository = layoutRepository;
         myDocumentOpen = new DocumentOpen(myAuthorRepository, myCountryRepository, myBookRepository,
-            myReadPagingRepository, myLayoutRepository);
+            myReadPagingRepository, myLayoutRepository, myBookPartRepository);
         redisManager = new RedisManagerPool(myServiceConfig.Config.RedisCache.ConnectionString);
         ThreadPool.QueueUserWorkItem(_ =>
         {
@@ -95,6 +98,18 @@ public class MainViewModel : ViewModelWindowBase
             Name = "Чтение",
             Id = MenuAndDocumentIds.ReadPagingMenuId,
             Title = "Чтение"
+        });
+        Menus.Add(new MainMenuWrapper(redisManager)
+        {
+            Name = "Разделы литературы",
+            Id = MenuAndDocumentIds.BookPartitionMenuId,
+            Title = "Разделы (физика, худ.лит-ра, история ..."
+        });
+        Menus.Add(new MainMenuWrapper(redisManager)
+        {
+            Name = "Тип литературы",
+            Id = MenuAndDocumentIds.GenreMenuId,
+            Title = "Тип литератур, например Термодинамика, Юмор(сатира), Скорочтение..."
         });
 
         Log.Information("Загрузка главного окна");

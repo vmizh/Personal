@@ -94,7 +94,7 @@ public class BaseService<T>(IBaseRepository<T> repository) : IBaseService<T>
             return APIResponse.ReturnError(response, ex, Log.Logger);
         }
     }
-
+    
     public virtual async Task<IResult> UpdateManyAsync(IEnumerable<T> items)
     {
         

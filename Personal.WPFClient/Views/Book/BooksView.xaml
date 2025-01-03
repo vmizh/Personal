@@ -17,8 +17,7 @@
             CurrentItem="{Binding CurrentBook, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
             SelectedItem="{Binding CurrentBook, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
             SelectedItems="{Binding SelectedBooks, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
-            CustomSummaryCommand="{Binding CustomBookSummaryCommand}"
-            AutoGeneratingColumn="GridControl_OnAutoGeneratingColumn">
+            >
             <dxg:GridControl.View>
                 <dxg:TableView
                     Name="TableView"

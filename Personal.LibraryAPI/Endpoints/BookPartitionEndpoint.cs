@@ -11,7 +11,7 @@ public static class BookPartitionEndpoint
 {
     public static void ConfigureBookPartitionEndpoints(this WebApplication app)
     {
-        var BookPartitionMap = app.MapGroup("/api/BookPartition");
+        var BookPartitionMap = app.MapGroup("/api/bookpartition");
         BookPartitionMap.MapGet("/all", GetBookPartitions).WithName("GetAllBookPartitions").Produces<APIResponse>()
             .Produces(204).Produces(400);
         BookPartitionMap.MapGet("/{id:guid}", GetBookPartition).WithName("GetBookPartition").Produces<APIResponse>()

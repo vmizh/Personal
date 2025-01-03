@@ -54,8 +54,10 @@ public partial class App : Application
                 services.AddScoped<IBookRepository, BookRepository>();
                 services.AddScoped<IReadPagingRepository, ReadPagingRepository>();
                 services.AddScoped<ILayoutRepository, LayoutRepository>();
+                services.AddScoped<IBookPartitionRepository, BookPartitionRepository>();
                 services.AddScoped<AuthorsWindowViewModel>();
                 services.AddScoped<ReadPagingViewModel>();
+                services.AddScoped<BookPartitionsWindowViewModel>();
             })
             .Build();
         var ci = new CultureInfo("ru-RU");

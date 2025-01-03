@@ -4,6 +4,7 @@
     xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
+    xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
     dx:ThemeManager.ThemeName="Win11Light"
     Title="" Height="200" Width="480"
     WindowStartupLocation="CenterScreen"
@@ -17,18 +18,8 @@
     AllowsTransparency="True"
     BorderThickness="0">
     <Border CornerRadius="5">
-        <Grid Margin="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" MinWidth="480" />
-                <ColumnDefinition Width="0*" />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="70" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <TextBox Grid.Row="0"
-                     Grid.Column="0"
+        <DockPanel>
+            <TextBox DockPanel.Dock="Top"
                      Text="{Binding TitleText}"
                      Focusable="False"
                      IsReadOnly="True"
@@ -39,44 +30,38 @@
                      FontWeight="Bold"
                      VerticalContentAlignment="Bottom"
                      Background="White"
-                     Padding="25,0,0,0" 
+                     Padding="25,0,0,0"
                      Foreground="{Binding  TitleTextColor}" />
 
-            <TextBox HorizontalContentAlignment="Left"
-                     Padding="25,10,5,5"
-                     VerticalContentAlignment="Top"
-                     Text="{Binding Text,NotifyOnSourceUpdated=True}"
-                     Grid.Column="0"
-                     Grid.Row="1"
-                     IsReadOnly="True"
-                     Focusable="False"
-                     TextWrapping="Wrap"
-                     TextAlignment="Left"
-                     BorderThickness="0"
-                     Background="White"
-                     FontSize="14"
-                     
-                     />
-
-            <StackPanel Grid.Row="2" Grid.Column="0"
-                        Background="#F3F3F3F3" Margin="0,0,0,0" Focusable="False" >
+            <StackPanel DockPanel.Dock="Bottom"
+                        Background="#F3F3F3F3" Margin="0,0,0,0" Focusable="False">
                 <WrapPanel
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Focusable="False"
-                    Margin ="27">
+                    Margin="27">
                     <ItemsControl
                         IsTabStop="False"
                         ItemsSource="{Binding Path=Buttons,NotifyOnSourceUpdated=True}"
                         MinHeight="30">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Focusable="False"  />
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Focusable="False" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
                 </WrapPanel>
             </StackPanel>
-        </Grid>
+            <dxe:TextEdit
+                DockPanel.Dock="Top"
+                Padding="25,10,5,5"
+                EditValue="{Binding Text,NotifyOnSourceUpdated=True}"
+                IsReadOnly="True"
+                Focusable="True"
+                TextWrapping="Wrap"
+                BorderThickness="0"
+                Background="White"
+                FontSize="14" />
+        </DockPanel>
     </Border>
 </dx:ThemedWindow>

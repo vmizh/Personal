@@ -153,6 +153,7 @@ public class BaseRepository<T> : IBaseRepository<T>, IDisposable
                    await _httpClient.GetAsync($"{myServiceConfig.Config.GetEndpoint(Endpoint)}/all"))
             {
                 var apiResponse = await response.Content.ReadAsStringAsync();
+                if (string.IsNullOrWhiteSpace(apiResponse)) return new List<T>();
                 var resp = JsonConvert.DeserializeObject<APIResponse>(apiResponse);
                 if (resp.IsSuccess)
                 {

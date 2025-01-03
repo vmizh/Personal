@@ -14,15 +14,17 @@ public class DocumentOpen
     private readonly ICountryRepository myCountryRepository;
     private readonly IBookRepository myBookRepository;
     private readonly IReadPagingRepository myReadPagingRepository;
+    private readonly IBookPartitionRepository myBookPartRepository;
 
     public DocumentOpen(IAuthorRepository authorRepository, ICountryRepository countryRepository,
-        IBookRepository bookRepository, IReadPagingRepository readPagingRepository, ILayoutRepository layoutRepository)
+        IBookRepository bookRepository, IReadPagingRepository readPagingRepository, ILayoutRepository layoutRepository, IBookPartitionRepository bookPartRepository)
     {
         myAuthorRepository = authorRepository;
         myCountryRepository = countryRepository;
         myBookRepository = bookRepository;
         myReadPagingRepository = readPagingRepository;
         myLayoutRepository = layoutRepository;
+        myBookPartRepository = bookPartRepository;
     }
 
     static DocumentOpen()
@@ -46,6 +48,12 @@ public class DocumentOpen
         if (typeOpen == MenuAndDocumentIds.ReadPagingMenuId)
         {
             var win = new ReadPagingViewModel(myBookRepository,myReadPagingRepository,myLayoutRepository);
+            win.Show();
+            return;
+        }
+        if (typeOpen == MenuAndDocumentIds.BookPartitionMenuId)
+        {
+            var win = new BookPartitionsWindowViewModel(myBookPartRepository,myLayoutRepository);
             win.Show();
             return;
         }

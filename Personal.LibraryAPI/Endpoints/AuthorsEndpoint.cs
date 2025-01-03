@@ -4,7 +4,6 @@ using Personal.Domain.Entities;
 using Personal.Services.Response;
 using Personal.Services.Services;
 using Serilog;
-using ServiceStack.Web;
 
 namespace Personal.LibraryAPI.Endpoints;
 
@@ -29,7 +28,7 @@ public static class AuthorsEndpoint
         var response = new APIResponse();
         try
         {
-            var saved= await service.UpdateAsync(item_dto);
+            var saved = await service.UpdateAsync(item_dto);
             response.IsSuccess = true;
             response.StatusCode = HttpStatusCode.OK;
             response.Result = saved;
@@ -49,7 +48,7 @@ public static class AuthorsEndpoint
         try
         {
             var ret = await service.CreateAsync(item_dto);
-            
+
             response.IsSuccess = true;
             response.StatusCode = HttpStatusCode.OK;
             response.Result = ret;
