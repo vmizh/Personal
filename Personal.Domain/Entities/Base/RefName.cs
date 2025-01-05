@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
@@ -7,8 +8,11 @@ namespace Personal.Domain.Entities.Base;
 [DebuggerDisplay("'{Id}' {Name}")]
 public class RefName : IEquatable<RefName>
 {
-    [BsonRepresentation(BsonType.String)] public Guid Id { set; get; } = Guid.NewGuid();
+    [BsonRepresentation(BsonType.String)]
+    [Display(Name = "Id", AutoGenerateField = false)]
+    public Guid Id { set; get; } = Guid.NewGuid();
 
+    [Display(Name = "Наименование", AutoGenerateField = true)]
     public required string Name { set; get; } = string.Empty;
 
     public bool Equals(RefName? other)

@@ -12,6 +12,7 @@ public static class MenuAndDocumentIds
 
     public static readonly Guid BookPartitionMenuId = Guid.Parse("{C3AADE5A-B875-491F-90FB-9DBA61C419E2}");
     public static readonly Guid GenreMenuId = Guid.Parse("{C0F844DC-1E4C-4E6F-B2F5-FF02EC2894FB}");
+    public static readonly Guid GenreSelectDialogId = Guid.Parse("{4D17DBF5-4608-4E28-ADD2-31E213D20D0E}");
     
     public static readonly Guid BookDocumentId = Guid.Parse("{20754334-8109-4ED9-8FCA-5BA3FDE504A3}");
     public static readonly Guid AuthorDocumentId = Guid.Parse("{CCFB0A1C-461B-4B8F-8453-26000EED0C13}");

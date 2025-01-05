@@ -7,9 +7,8 @@ using System.Text;
 using JetBrains.Annotations;
 using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
-using WPFCore;
 
-namespace Personal.WPFClient.Wrappers;
+namespace WPFCore.Wrappers;
 
 [DebuggerDisplay("Id:{Id} {Name}")]
 public class BookWrapper : BaseWrapper<Book>
@@ -73,6 +72,14 @@ public class BookWrapper : BaseWrapper<Book>
     [Display(AutoGenerateField = true, Name = "Авторы")]
     [CanBeNull]
     public List<RefName> AuthorList
+    {
+        get => GetValue<List<RefName>?>();
+        set => SetValue(value);
+    }
+
+    [Display(AutoGenerateField = true, Name = "Типы (жанры)")]
+    [CanBeNull]
+    public List<RefName> Genres
     {
         get => GetValue<List<RefName>?>();
         set => SetValue(value);

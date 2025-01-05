@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Personal.Domain.Entities;
 using Personal.Services.Services;
 
 namespace Personal.Services;
@@ -17,6 +16,7 @@ public static class ServiceRegistration
         services.AddScoped<IReadPagingService, ReadPagingService>();
         services.AddScoped<ILayoutService, LayoutService>();
         services.AddScoped<IBookPartitionsService, BookPartitionsService>();
+        services.AddScoped<IGenreService, GenreService>();
 
         return services;
     }

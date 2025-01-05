@@ -7,58 +7,117 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="600">
-    <dxlc:LayoutControl Padding="-5">
-        <dxlc:LayoutGroup Header="Авторы"
-                          View="GroupBox"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Stretch"
-                          Padding="-5">
-            <dxg:GridControl
-                x:Name="gridAuthors"
-                Style="{StaticResource GridControl.Base}"
-                ItemsSource="{Binding Document.AuthorList, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                CurrentItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                SelectedItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                SelectedItems="{Binding SelectedAuthors, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
-                <dxg:GridControl.View>
-                    <dxg:TableView
-                        Name="TableView"
-                        Style="{StaticResource TableView.Standart}">
-                        <dxg:TableView.ContextMenu>
-                            <ContextMenu>
-                                <MenuItem Header="Добавить автора" Command="{Binding AddAuthorCommand}">
-                                    <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="AddCircle" Foreground="Blue" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <MenuItem Header="Удалить автора" Command="{Binding DeleteAuthorCommand}">
-                                    <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="DeleteCircle" Foreground="Red" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                                <Separator />
-                                <MenuItem Header="Экспорт" Command="{Binding VisualControlExportCommand}"
-                                          CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor,
- AncestorType={x:Type ContextMenu}}}">
-                                    <MenuItem.Icon>
-                                        <materialDesign:PackIcon Kind="TableExport" Background="AntiqueWhite" />
-                                    </MenuItem.Icon>
-                                </MenuItem>
-                            </ContextMenu>
-                        </dxg:TableView.ContextMenu>
-                    </dxg:TableView>
-                </dxg:GridControl.View>
-            </dxg:GridControl>
-
-        </dxlc:LayoutGroup>
-        <dxlc:LayoutGroup Header="LayoutGroup"
+    <dxlc:LayoutControl Padding="5"
+                        Orientation="Horizontal"
+                        dxlc:LayoutControl.AllowHorizontalSizing="True"
+                        >
+        <dxlc:LayoutGroup Orientation="Vertical"
                           View="Group"
                           HorizontalAlignment="Stretch"
                           VerticalAlignment="Stretch"
-                          Padding="5 15 5 5">
-            <DockPanel>
+                          dxlc:LayoutControl.AllowHorizontalSizing="True"
+                          >
+            <dxlc:LayoutGroup Header="Авторы"
+                              View="GroupBox"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              dxlc:LayoutControl.AllowVerticalSizing="True"
+                              Padding="-5">
+                <dxg:GridControl
+                    x:Name="gridAuthors"
+                    dx:DXSerializer.SerializationID="gridAuthors"
+                    Style="{StaticResource GridControl.Base}"
+                    ItemsSource="{Binding Document.AuthorList, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    CurrentItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    SelectedItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    SelectedItems="{Binding SelectedAuthors, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView
+                            Name="TableView"
+                            Style="{StaticResource TableView.Standart}">
+                            <dxg:TableView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Добавить автора" Command="{Binding AddAuthorCommand}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="AddCircle" Foreground="Blue" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Удалить автора" Command="{Binding DeleteAuthorCommand}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="DeleteCircle" Foreground="Red" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Header="Экспорт" Command="{Binding VisualControlExportCommand}"
+                                              CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor,
+ AncestorType={x:Type ContextMenu}}}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="TableExport" Background="AntiqueWhite" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </dxg:TableView.ContextMenu>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+
+            </dxlc:LayoutGroup>
+            <dxlc:LayoutGroup Header="Типы (жанры)"
+                              View="GroupBox"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
+                              dxlc:LayoutControl.AllowVerticalSizing="True"
+                              Padding="-5">
+                <dxg:GridControl
+                    x:Name="gridGenres"
+                    dx:DXSerializer.SerializationID="gridGenres"
+                    Style="{StaticResource GridControl.Base}"
+                    ItemsSource="{Binding Document.Genres, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    CurrentItem="{Binding CurrentGenre, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    SelectedItem="{Binding CurrentGenre, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
+                    SelectedItems="{Binding SelectedGenres, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+                    <dxg:GridControl.View>
+                        <dxg:TableView
+                            Name="TableViewGenres"
+                            Style="{StaticResource TableView.Standart}">
+                            <dxg:TableView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Добавить тип(жанр)" Command="{Binding AddGenreCommand}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="AddCircle" Foreground="Blue" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <MenuItem Header="Удалить тип(жанр)" Command="{Binding DeleteGenreCommand}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="DeleteCircle" Foreground="Red" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                    <Separator />
+                                    <MenuItem Header="Экспорт" Command="{Binding VisualControlExportCommand}"
+                                              CommandParameter="{Binding Path=PlacementTarget, RelativeSource={RelativeSource Mode=FindAncestor,
+ AncestorType={x:Type ContextMenu}}}">
+                                        <MenuItem.Icon>
+                                            <materialDesign:PackIcon Kind="TableExport" Background="AntiqueWhite" />
+                                        </MenuItem.Icon>
+                                    </MenuItem>
+                                </ContextMenu>
+                            </dxg:TableView.ContextMenu>
+                        </dxg:TableView>
+                    </dxg:GridControl.View>
+                </dxg:GridControl>
+            </dxlc:LayoutGroup>
+        </dxlc:LayoutGroup>
+        <dxlc:LayoutGroup View="Group"
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          dxlc:LayoutControl.AllowHorizontalSizing="True"
+                          Margin="5 0"
+        >
+            <DockPanel HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch">
                 <StackPanel DockPanel.Dock="Top"
                             Orientation="Horizontal">
                     <Label Content="Наименование:"
@@ -66,7 +125,7 @@
                     <dxe:TextEdit
                         EditValue="{Binding Document.Name, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
                         MinWidth="200"
-                        NullText="ВВедите наименование..." />
+                        NullText="Введите наименование..." />
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top"
                             Orientation="Horizontal">
@@ -78,14 +137,17 @@
                     <Label Content="Год издания:" />
                     <dxe:TextEdit
                         EditValue="{Binding Document.PublisherYear, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}"
-                        MinWidth="20" />
+                        MinWidth="60" />
                 </StackPanel>
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch"
+                <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Stretch"
                             VerticalAlignment="Stretch">
                     <Label Content="Аннотация:" />
                     <dxe:TextEdit MinHeight="80"
                                   EditValue="{Binding Document.Annotation, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
                 </StackPanel>
+                <Label DockPanel.Dock="Top" Content="Оглавление:" />
+                <dxe:TextEdit MinHeight="80"
+                              EditValue="{Binding Document.TableOfContents, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
             </DockPanel>
         </dxlc:LayoutGroup>
     </dxlc:LayoutControl>

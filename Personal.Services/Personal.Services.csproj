@@ -20,6 +20,7 @@
     <Folder Include="Services\BaseService\" />
     <Folder Include="Services\BookService\" />
     <Folder Include="Services\LayoutService\" />
+    <Folder Include="Services\GenreService\" />
     <Folder Include="Services\ReadPagingService\" />
   </ItemGroup>
 

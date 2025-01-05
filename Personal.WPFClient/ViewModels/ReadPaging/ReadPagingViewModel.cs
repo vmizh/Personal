@@ -14,12 +14,12 @@ using Personal.WPFClient.Repositories;
 using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views.ReadPaging;
-using Personal.WPFClient.Wrappers.Base;
-using Personal.WPFClient.Wrappers.ReadPagingWrapper;
+using Personal.WPFClient.Wrappers;
 using WPFClient.Configuration;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
+using WPFCore.Wrappers;
 
 namespace Personal.WPFClient.ViewModels.ReadPaging;
 

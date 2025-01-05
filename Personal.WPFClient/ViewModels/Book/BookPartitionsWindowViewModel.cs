@@ -12,14 +12,13 @@ using Personal.WPFClient.Helper.Window;
 using Personal.WPFClient.Repositories;
 using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
-using Personal.WPFClient.Views;
 using Personal.WPFClient.Views.Book;
 using Personal.WPFClient.Wrappers;
-using Personal.WPFClient.Wrappers.Base;
 using WPFClient.Configuration;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
+using WPFCore.Wrappers;
 
 namespace Personal.WPFClient.ViewModels;
 
@@ -109,17 +108,21 @@ public class BookPartitionsWindowViewModel : ViewModelWindowBase
         };
         BookPartitions.Add(newItem);
         CurrentBookPart = newItem;
-        if (DataControl is Authors view)
+        if (DataControl is BookPartitionView view)
         {
-            view.tableView.MoveLastRow();
-            view.gridControl.CurrentColumn = view.gridControl.Columns[0];
+            view.TableView.MoveLastRow();
+            view.GridControl.CurrentColumn = view.GridControl.Columns[0];
         }
     }
 
     private void DeleteBookPart()
     {
         DeletedBookParts.Add(CurrentBookPart);
-        DeletedBookParts.Remove(CurrentBookPart);
+        BookPartitions.Remove(CurrentBookPart);
+        if (DataControl is BookPartitionView view)
+        {
+            view.GridControl.RefreshData();
+        }
     }
 
     public void LoadReferences()

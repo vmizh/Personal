@@ -7,9 +7,8 @@ using System.Diagnostics;
 using System.Linq;
 using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
-using WPFCore;
 
-namespace Personal.WPFClient.Wrappers.ReadPagingWrapper;
+namespace WPFCore.Wrappers;
 
 [DebuggerDisplay("Id:{Id} {Name}")]
 public class ReadPagingWrapper : BaseWrapper<ReadPaging>

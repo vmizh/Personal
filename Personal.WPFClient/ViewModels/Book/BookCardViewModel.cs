@@ -14,11 +14,12 @@ using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views.Book;
 using Personal.WPFClient.Wrappers;
-using Personal.WPFClient.Wrappers.Base;
 using WPFClient.Configuration;
+using WPFCore.Repositories;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
+using WPFCore.Wrappers;
 
 namespace Personal.WPFClient.ViewModels;
 
@@ -26,11 +27,15 @@ public class BookCardViewModel : ViewModelWindowBase
 {
     private readonly IAuthorRepository myAuthorRepository;
     private readonly IBookRepository myBookRepository;
+    private readonly IGenreRepository myGenreRepository;
     private RefName myCurrentAutor;
+    private RefName myCurrentGenre;
 
-    public BookCardViewModel(IAuthorRepository authorRepository, IBookRepository bookRepository, ILayoutRepository layoutRepository)
+    public BookCardViewModel(IAuthorRepository authorRepository, IBookRepository bookRepository,
+        ILayoutRepository layoutRepository, IGenreRepository genreRepository)
     {
         myBookRepository = bookRepository;
+        myGenreRepository = genreRepository;
         myAuthorRepository = authorRepository;
         myLayoutRepository = layoutRepository;
         DataControl = new BookCardView();
@@ -41,6 +46,25 @@ public class BookCardViewModel : ViewModelWindowBase
             FormNameColor = new SolidColorBrush(Colors.Green)
         };
         Properties.Id = MenuAndDocumentIds.BookDocumentId;
+        Properties.LeftMenuBar =
+        [
+            new MenuButtonInfo
+            {
+                Alignment = Dock.Right,
+                HAlignment = HorizontalAlignment.Right,
+                Content = Application.Current.Resources["menuOptions"] as ControlTemplate,
+                ToolTip = "Настройки",
+                SubMenu =
+                [
+                    new MenuButtonInfo
+                    {
+                        Image = Application.Current.Resources["imageResetLayout"] as DrawingImage,
+                        Caption = "Переустановить разметку",
+                        Command = OnWindowResetLayoutCommand
+                    }
+                ]
+            }
+        ];
         Properties.RightMenuBar =
         [
             new MenuButtonInfo
@@ -73,9 +97,13 @@ public class BookCardViewModel : ViewModelWindowBase
         DeleteAuthorCommand = new DelegateCommand(
             DeleteAuthor,
             () => CurrentAuthor != null);
+        AddGenreCommand = new DelegateCommand(AddGenre, () => true);
+        DeleteGenreCommand = new DelegateCommand(
+            DeleteGenre,
+            () => CurrentGenre != null);
     }
 
-    
+
     public BookWrapper Document { get; set; }
 
     public RefName CurrentAuthor
@@ -89,11 +117,32 @@ public class BookCardViewModel : ViewModelWindowBase
         }
     }
 
+    public RefName CurrentGenre
+    {
+        get => myCurrentGenre;
+        set
+        {
+            if (Equals(value, myCurrentGenre)) return;
+            myCurrentGenre = value;
+            RaisePropertyChanged(nameof(CurrentGenre));
+        }
+    }
+
+    private void DeleteGenre()
+    {
+        // ReSharper disable once PossibleNullReferenceException
+        Document.Genres.Remove(CurrentGenre);
+        if (DataControl is BookCardView view)
+            view.gridGenres.RefreshData();
+        if (Document.State != StateEnum.New)
+            Document.State = StateEnum.Changed;
+    }
+
     private void DeleteAuthor()
     {
         // ReSharper disable once PossibleNullReferenceException
         Document.AuthorList.Remove(CurrentAuthor);
-        if(DataControl is BookCardView view)
+        if (DataControl is BookCardView view)
             view.gridAuthors.RefreshData();
         if (Document.State != StateEnum.New)
             Document.State = StateEnum.Changed;
@@ -101,7 +150,7 @@ public class BookCardViewModel : ViewModelWindowBase
 
     private void AddAuthor()
     {
-        var ctx = new AuthorsDialogViewModel(myAuthorRepository,myLayoutRepository);
+        var ctx = new AuthorsDialogViewModel(myAuthorRepository, myLayoutRepository);
         var service = GetService<IDialogService>("DialogServiceUI");
         if (service.ShowDialog(MessageButton.OKCancel, "Запрос", ctx) == MessageResult.Cancel) return;
         var auth = ctx.CurrentAuthor;
@@ -117,9 +166,30 @@ public class BookCardViewModel : ViewModelWindowBase
                                      ? $"{auth.SecondName.First()}."
                                      : string.Empty)
         });
-        
-        if(DataControl is BookCardView view)
+
+        if (DataControl is BookCardView view)
             view.gridAuthors.RefreshData();
+        if (Document.State != StateEnum.New)
+            Document.State = StateEnum.Changed;
+    }
+
+    private void AddGenre()
+    {
+        var ctx = new GenreSelectDialogViewModel(myGenreRepository, myLayoutRepository);
+        var service = GetService<IDialogService>("DialogServiceUI");
+        if (service.ShowDialog(MessageButton.OKCancel, "Запрос", ctx) == MessageResult.Cancel) return;
+        if (!ctx.SelectedGenres.Any()) return;
+        foreach (var genre in ctx.SelectedGenres)
+        {
+            if (Document.Genres.Any(_ => _.Id == genre.Id)) continue;
+            Document.Genres.Add(new RefName
+            {
+                Id = genre.Id,
+                Name = genre.Name
+            });
+        }
+        if (DataControl is BookCardView view)
+            view.gridGenres.RefreshData();
         if (Document.State != StateEnum.New)
             Document.State = StateEnum.Changed;
     }
@@ -145,6 +215,8 @@ public class BookCardViewModel : ViewModelWindowBase
 
     public ICommand<object> AddAuthorCommand { get; private set; }
     public ICommand DeleteAuthorCommand { get; private set; }
+    public ICommand AddGenreCommand { get; private set; }
+    public ICommand DeleteGenreCommand { get; }
 
     public override bool CanDocumentSave => Document != null && !string.IsNullOrWhiteSpace(Document.Name) &&
                                             Document.State != StateEnum.NotChanged;

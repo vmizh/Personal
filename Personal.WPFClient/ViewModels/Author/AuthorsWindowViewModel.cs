@@ -16,11 +16,11 @@ using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views;
 using Personal.WPFClient.Wrappers;
-using Personal.WPFClient.Wrappers.Base;
 using WPFClient.Configuration;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
+using WPFCore.Wrappers;
 
 namespace Personal.WPFClient.ViewModels;
 
@@ -171,7 +171,7 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
                                                                  Authors.All(_ =>
                                                                      !string.IsNullOrWhiteSpace(_.Name))) ||
                                                                 DeletedAuthors.Any());
-    
+
     public override async Task DocumentSaveAsync()
     {
         try

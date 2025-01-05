@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
-using Personal.WPFClient.Wrappers.Base;
+using Personal.WPFClient.Wrappers;
 using WPFCore.ViewModel;
 
 namespace WPFCore;

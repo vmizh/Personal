@@ -18,6 +18,7 @@ using Personal.WPFClient.Wrappers.Menu;
 using Serilog;
 using ServiceStack.Redis;
 using WPFClient.Configuration;
+using WPFCore.Repositories;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
@@ -33,8 +34,7 @@ public class MainViewModel : ViewModelWindowBase
     private readonly ICountryRepository myCountryRepository; 
     private readonly IReadPagingRepository myReadPagingRepository;
     private readonly IBookPartitionRepository myBookPartRepository;
-
-
+    private readonly IGenreRepository myGenreRepository;
 
     private readonly DocumentOpen myDocumentOpen;
     private readonly ServiceConfigurationBuilder myServiceConfig;
@@ -43,7 +43,7 @@ public class MainViewModel : ViewModelWindowBase
     public MainViewModel(ServiceConfigurationBuilder serviceConfig, IAuthorRepository authorRepository,
         ICountryRepository countryRepository, IBookRepository bookRepository,
         IReadPagingRepository readPagingRepository,
-        ILayoutRepository layoutRepository, IBookPartitionRepository bookPartRepository)
+        ILayoutRepository layoutRepository, IBookPartitionRepository bookPartRepository, IGenreRepository genreRepository)
     {
         Properties.Name = "Персональная база";
         Properties.Id = Guid.Parse("{3378BDFE-F66B-4B39-B5A6-016DF88FEC3A}");
@@ -60,9 +60,10 @@ public class MainViewModel : ViewModelWindowBase
         myBookRepository = bookRepository;
         myReadPagingRepository = readPagingRepository;
         myBookPartRepository = bookPartRepository;
+        myGenreRepository = genreRepository;
         myLayoutRepository = layoutRepository;
         myDocumentOpen = new DocumentOpen(myAuthorRepository, myCountryRepository, myBookRepository,
-            myReadPagingRepository, myLayoutRepository, myBookPartRepository);
+            myReadPagingRepository, myLayoutRepository, myBookPartRepository,myGenreRepository);
         redisManager = new RedisManagerPool(myServiceConfig.Config.RedisCache.ConnectionString);
         ThreadPool.QueueUserWorkItem(_ =>
         {

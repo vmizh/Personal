@@ -9,7 +9,7 @@
     <DockPanel Style="{StaticResource DXServices}">
         <dxg:GridControl
             Style="{StaticResource GridControl.Base}"
-            ItemsSource="{Binding Authors, NotifyOnSourceUpdated=True}"
+            ItemsSource="{Binding Genres, NotifyOnSourceUpdated=True}"
             CurrentItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
             SelectedItem="{Binding CurrentAuthor, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
             SelectedItems="{Binding SelectedAuthors, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"

@@ -29,6 +29,12 @@
                                     <materialDesign:PackIcon Kind="AddCircle" Foreground="Blue" />
                                 </MenuItem.Icon>
                             </MenuItem>
+                            <MenuItem Header="Изменить книгу" Command="{Binding UpdateCommand}">
+                                <MenuItem.Icon>
+                                    <materialDesign:PackIcon Kind="EditCircle" Foreground="Green" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <Separator/>
                             <MenuItem Header="Удалить книгу" Command="{Binding DeleteCommand}">
                                 <MenuItem.Icon>
                                     <materialDesign:PackIcon Kind="DeleteCircle" Foreground="Red" />

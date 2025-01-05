@@ -4,6 +4,7 @@ using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.ViewModels;
 using Personal.WPFClient.ViewModels.ReadPaging;
 using WPFClient.Configuration;
+using WPFCore.Repositories;
 
 namespace Personal.WPFClient.Document;
 
@@ -15,9 +16,11 @@ public class DocumentOpen
     private readonly IBookRepository myBookRepository;
     private readonly IReadPagingRepository myReadPagingRepository;
     private readonly IBookPartitionRepository myBookPartRepository;
+    private readonly IGenreRepository myGenreRepository;
 
     public DocumentOpen(IAuthorRepository authorRepository, ICountryRepository countryRepository,
-        IBookRepository bookRepository, IReadPagingRepository readPagingRepository, ILayoutRepository layoutRepository, IBookPartitionRepository bookPartRepository)
+        IBookRepository bookRepository, IReadPagingRepository readPagingRepository, ILayoutRepository layoutRepository,
+        IBookPartitionRepository bookPartRepository, IGenreRepository genreRepository)
     {
         myAuthorRepository = authorRepository;
         myCountryRepository = countryRepository;
@@ -25,6 +28,7 @@ public class DocumentOpen
         myReadPagingRepository = readPagingRepository;
         myLayoutRepository = layoutRepository;
         myBookPartRepository = bookPartRepository;
+        myGenreRepository = genreRepository;
     }
 
     static DocumentOpen()
@@ -41,7 +45,7 @@ public class DocumentOpen
         }
         if (typeOpen == MenuAndDocumentIds.BookMenuId)
         {
-            var win = new BooksWindowViewModel(myAuthorRepository, myBookRepository,myLayoutRepository);
+            var win = new BooksWindowViewModel(myAuthorRepository, myBookRepository,myLayoutRepository,myGenreRepository);
             win.Show();
             return;
         }
@@ -54,6 +58,12 @@ public class DocumentOpen
         if (typeOpen == MenuAndDocumentIds.BookPartitionMenuId)
         {
             var win = new BookPartitionsWindowViewModel(myBookPartRepository,myLayoutRepository);
+            win.Show();
+            return;
+        }
+        if (typeOpen == MenuAndDocumentIds.GenreMenuId)
+        {
+            var win = new GenreWindowViewModel(myGenreRepository,myLayoutRepository,myBookPartRepository);
             win.Show();
             return;
         }

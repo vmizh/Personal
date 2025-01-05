@@ -38,6 +38,9 @@ public static class ServiceRegistration
         services.AddScoped<IBaseRepository<BookPartition>, BaseRepository<BookPartition>>();
         services.AddScoped<IBookPartitionsRepository, BookPartitionsRepository>();
 
+        services.AddScoped<IBaseRepository<Genre>, BaseRepository<Genre>>();
+        services.AddScoped<IGenreRepository, GenreRepository>();
+
         //services.AddScoped<IUserRepository, UserRepository>();
         return services;
     }

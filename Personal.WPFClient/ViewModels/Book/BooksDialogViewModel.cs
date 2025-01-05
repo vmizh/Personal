@@ -1,19 +1,17 @@
-﻿using Personal.WPFClient.Helper.Window;
-using Personal.WPFClient.Repositories;
-using Personal.WPFClient.Views;
-using Personal.WPFClient.Views.Author;
-using Personal.WPFClient.Views.Book;
-using Personal.WPFClient.Wrappers.Base;
-using Personal.WPFClient.Wrappers;
-using System.Threading.Tasks;
-using System;
-using Personal.Domain.Entities;
-using Personal.WPFClient.Repositories.Base;
-using WPFCore.ViewModel;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using Personal.Domain.Entities;
+using Personal.WPFClient.Helper.Window;
+using Personal.WPFClient.Repositories;
+using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
+using Personal.WPFClient.Views.Book;
+using Personal.WPFClient.Wrappers;
 using WPFClient.Configuration;
+using WPFCore.ViewModel;
+using WPFCore.Wrappers;
 
 namespace Personal.WPFClient.ViewModels;
 

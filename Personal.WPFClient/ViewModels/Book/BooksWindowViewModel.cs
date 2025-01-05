@@ -8,7 +8,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm;
-using DevExpress.Mvvm.Xpf;
 using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
 using Personal.WPFClient.Helper.Window;
@@ -17,11 +16,12 @@ using Personal.WPFClient.Repositories.Base;
 using Personal.WPFClient.Repositories.Layout;
 using Personal.WPFClient.Views;
 using Personal.WPFClient.Wrappers;
-using Personal.WPFClient.Wrappers.Base;
 using WPFClient.Configuration;
+using WPFCore.Repositories;
 using WPFCore.ViewModel;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
+using WPFCore.Wrappers;
 using Application = System.Windows.Application;
 using HorizontalAlignment = System.Windows.HorizontalAlignment;
 
@@ -31,12 +31,14 @@ public class BooksWindowViewModel : ViewModelWindowBase
 {
     private readonly IAuthorRepository myAuthorRepository;
     private readonly IBookRepository myBookRepository;
+    private readonly IGenreRepository myGenreRepository;
 
     public BooksWindowViewModel(IAuthorRepository authorRepository, IBookRepository bookRepository,
-        ILayoutRepository layoutRepository)
+        ILayoutRepository layoutRepository, IGenreRepository genreRepository)
     {
         myAuthorRepository = authorRepository;
         myBookRepository = bookRepository;
+        myGenreRepository = genreRepository;
         myLayoutRepository = layoutRepository;
         DataControl = new BooksView();
         Properties.WindowTitle = "Список книг";
@@ -87,11 +89,11 @@ public class BooksWindowViewModel : ViewModelWindowBase
         DeleteCommand = new DelegateCommand(
             DeleteBook,
             () => CurrentBook != null);
-        CustomBookSummaryCommand = new DelegateCommand<RowSummaryArgs>(CustomBookSummary, true);
+        UpdateCommand = new DelegateCommand(
+            EditBook, CurrentBook is not null);
         LoadReferences();
     }
 
-    
 
     #region Properties
 
@@ -111,12 +113,16 @@ public class BooksWindowViewModel : ViewModelWindowBase
 
     #region Commands
 
-    public ICommand CustomBookSummaryCommand { get; private set; }
+    public ICommand CustomBookSummaryCommand { get; }
+    public ICommand UpdateCommand { get; private set; }
 
-    private void CustomBookSummary(RowSummaryArgs obj)
+    private void EditBook()
     {
-
+        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository, myLayoutRepository, myGenreRepository);
+        doc.LoadDocument(CurrentBook);
+        doc.Show().ConfigureAwait(true);
     }
+
     public ICommand AddCommand { get; private set; }
     public ICommand DeleteCommand { get; private set; }
 
@@ -134,7 +140,7 @@ public class BooksWindowViewModel : ViewModelWindowBase
         };
         Books.Add(newItem);
         CurrentBook = newItem;
-        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository,myLayoutRepository);
+        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository, myLayoutRepository, myGenreRepository);
         doc.LoadDocument(CurrentBook);
         doc.Show().ConfigureAwait(true);
     }
@@ -167,7 +173,7 @@ public class BooksWindowViewModel : ViewModelWindowBase
 
     public override async Task DocumentOpenAsync()
     {
-        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository,myLayoutRepository);
+        var doc = new BookCardViewModel(myAuthorRepository, myBookRepository, myLayoutRepository, myGenreRepository);
         doc.LoadDocument(CurrentBook);
         await doc.Show();
     }

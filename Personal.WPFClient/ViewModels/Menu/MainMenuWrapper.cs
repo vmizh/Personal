@@ -4,7 +4,6 @@ using System.Windows.Input;
 using DevExpress.Mvvm;
 using Newtonsoft.Json;
 using Personal.Domain.Redis;
-using Personal.WPFClient.Wrappers.Base;
 using ServiceStack.Redis;
 using ViewModelBase = WPFCore.ViewModel.ViewModelBase;
 

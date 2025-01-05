@@ -23,6 +23,7 @@ using Personal.WPFClient.ViewModels;
 using Personal.WPFClient.ViewModels.ReadPaging;
 using Serilog;
 using WPFClient.Configuration;
+using WPFCore.Repositories;
 
 namespace Personal.WPFClient;
 
@@ -49,15 +50,19 @@ public partial class App : Application
             {
                 services.AddSingleton<ServiceConfigurationBuilder>();
                 services.AddSingleton<MainViewModel>();
+
                 services.AddScoped<IAuthorRepository, AuthorRepository>();
                 services.AddScoped<ICountryRepository, CountryRepository>();
                 services.AddScoped<IBookRepository, BookRepository>();
                 services.AddScoped<IReadPagingRepository, ReadPagingRepository>();
                 services.AddScoped<ILayoutRepository, LayoutRepository>();
                 services.AddScoped<IBookPartitionRepository, BookPartitionRepository>();
+                services.AddScoped<IGenreRepository, GenreRepository>();
+                
                 services.AddScoped<AuthorsWindowViewModel>();
                 services.AddScoped<ReadPagingViewModel>();
                 services.AddScoped<BookPartitionsWindowViewModel>();
+                services.AddScoped<GenreWindowViewModel>();
             })
             .Build();
         var ci = new CultureInfo("ru-RU");

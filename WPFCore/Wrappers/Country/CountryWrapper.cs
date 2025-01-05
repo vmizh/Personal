@@ -1,4 +1,4 @@
-﻿namespace Personal.WPFClient.Wrappers.Country;
+﻿namespace WPFCore.Wrappers;
 
 public class CountryWrapper
 {

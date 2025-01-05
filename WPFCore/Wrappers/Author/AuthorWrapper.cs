@@ -3,12 +3,14 @@ using System;
 using System.Diagnostics;
 using WPFCore;
 using System.ComponentModel.DataAnnotations;
+using System.DirectoryServices.ActiveDirectory;
+using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
 
-namespace Personal.WPFClient.Wrappers;
+namespace WPFCore.Wrappers;
 
 [DebuggerDisplay("Id:{Id} {Name}")]
-public class AuthorWrapper(Domain.Entities.Author model) : BaseWrapper<Domain.Entities.Author>(model)
+public class AuthorWrapper(Author model) : BaseWrapper<Author>(model)
 {
     [Display(AutoGenerateField = false, Name = "Id")]
     public Guid Id => Model._id;

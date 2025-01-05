@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Personal.WPFClient.Wrappers.Base;
+namespace Personal.WPFClient.Wrappers;
 
 /// <summary>
 /// Состояние записи

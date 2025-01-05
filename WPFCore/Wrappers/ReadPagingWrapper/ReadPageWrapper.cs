@@ -1,19 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Personal.Domain.Entities;
-using Personal.WPFClient.Wrappers.Base;
-using WPFCore;
+using Personal.WPFClient.Wrappers;
 
-namespace Personal.WPFClient.Wrappers.ReadPagingWrapper;
+namespace WPFCore.Wrappers;
 
 public class ReadPageWrapper : BaseWrapper<ReadPage>
 {
-    private ReadPagingWrapper myParent;
+    private readonly ReadPagingWrapper myParent;
+
     public ReadPageWrapper(ReadPage model, ReadPagingWrapper parent) : base(model)
     {
         myParent = parent;
     }
-    
+
     [Display(AutoGenerateField = true, Name = "Дата")]
     public DateTime Date
     {
@@ -39,7 +39,6 @@ public class ReadPageWrapper : BaseWrapper<ReadPage>
             if (myParent.State != StateEnum.New)
                 myParent.State = StateEnum.Changed;
             myParent.OnPropertyChanged(nameof(ReadPagingWrapper.PageCount));
-
         }
     }
 
@@ -50,7 +49,7 @@ public class ReadPageWrapper : BaseWrapper<ReadPage>
         set
         {
             SetValue(value);
-            if(myParent is not null && myParent.State != StateEnum.New)
+            if (myParent is not null && myParent.State != StateEnum.New)
                 myParent.State = StateEnum.Changed;
         }
     }
@@ -62,10 +61,8 @@ public class ReadPageWrapper : BaseWrapper<ReadPage>
         set
         {
             SetValue(value);
-            if(myParent is not null && myParent.State != StateEnum.New)
+            if (myParent is not null && myParent.State != StateEnum.New)
                 myParent.State = StateEnum.Changed;
         }
     }
-
-    
 }
