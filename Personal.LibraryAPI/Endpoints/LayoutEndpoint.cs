@@ -7,8 +7,10 @@ using System.Net;
 
 namespace Personal.LibraryAPI.Endpoints;
 
+
 public static class LayoutEndpoint
 {
+
     public static void ConfigureLayoutEndpoints(this WebApplication app)
     {
         var lauyoutMap = app.MapGroup("/api/layout");

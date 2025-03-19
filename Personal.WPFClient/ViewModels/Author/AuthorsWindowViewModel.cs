@@ -43,6 +43,25 @@ public class AuthorsWindowViewModel : ViewModelWindowBase
             FormNameColor = new SolidColorBrush(Colors.Green)
         };
         Properties.Id = MenuAndDocumentIds.AuthorMenuId;
+        Properties.LeftMenuBar =
+        [
+            new MenuButtonInfo
+            {
+                Alignment = Dock.Right,
+                HAlignment = HorizontalAlignment.Right,
+                Content = Application.Current.Resources["menuOptions"] as ControlTemplate,
+                ToolTip = "Настройки",
+                SubMenu =
+                [
+                    new MenuButtonInfo
+                    {
+                        Image = Application.Current.Resources["imageResetLayout"] as DrawingImage,
+                        Caption = "Переустановить разметку",
+                        Command = OnWindowResetLayoutCommand
+                    }
+                ]
+            }
+        ];
         Properties.RightMenuBar =
         [
             new MenuButtonInfo

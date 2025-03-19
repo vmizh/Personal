@@ -27,7 +27,7 @@
             <ToolBarTray DockPanel.Dock="Bottom">
                 <ToolBar Style="{DynamicResource MaterialDesignToolBar}"></ToolBar>
             </ToolBarTray>
-            <UserControl Content="{Binding DataControl}" />
+            <UserControl Name="DataControl" Content="{Binding DataControl}" />
         </DockPanel>
         <base:LoadingIndicator x:Name="loadingIndicator" Visibility="Hidden" VerticalAlignment="Center"
                                HorizontalAlignment="Center"

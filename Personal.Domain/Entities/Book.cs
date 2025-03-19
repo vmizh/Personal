@@ -9,5 +9,6 @@ public class Book : BaseReference
     public string? Publisher { set; get; }
     public string? Annotation { set; get; }
     public string? TableOfContents { set; get; }
+    public string? TableOfContentsRtf { set; get; }
     public List<RefName>? Genres { set; get; }
 }

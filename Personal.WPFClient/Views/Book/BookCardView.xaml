@@ -8,6 +8,8 @@
              xmlns:dxe="http://schemas.devexpress.com/winfx/2008/xaml/editors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:dx="http://schemas.devexpress.com/winfx/2008/xaml/core"
+             xmlns:dxre="http://schemas.devexpress.com/winfx/2008/xaml/richedit"
+             xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="600">
     <dxlc:LayoutControl Padding="5"
@@ -140,14 +142,30 @@
                         MinWidth="60" />
                 </StackPanel>
                 <StackPanel DockPanel.Dock="Top" Orientation="Vertical" HorizontalAlignment="Stretch"
-                            VerticalAlignment="Stretch">
+                            VerticalAlignment="Top">
                     <Label Content="Аннотация:" />
                     <dxe:TextEdit MinHeight="80"
-                                  EditValue="{Binding Document.Annotation, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
+                                  MaxHeight="200"
+                                  Name="Annotation"
+                                  TextWrapping="Wrap"
+                                  AcceptsReturn="True"
+                                  AcceptsTab="True"
+                                  EditValue="{Binding Document.Annotation, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+                        <dxmvvm:Interaction.Behaviors>
+                            <dxmvvm:KeyToCommand EventName="PreviewKeyDown"
+                                                 Command="{Binding DocumentChangedCommand}"/>
+                        </dxmvvm:Interaction.Behaviors>
+                    </dxe:TextEdit>
                 </StackPanel>
                 <Label DockPanel.Dock="Top" Content="Оглавление:" />
-                <dxe:TextEdit MinHeight="80"
-                              EditValue="{Binding Document.TableOfContents, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}" />
+                <dxre:RichEditControl 
+                    Name="tableOfContentsEditor"
+                    DocumentSource="{Binding Document.TableOfContentsRtf, NotifyOnSourceUpdated=True, NotifyOnTargetUpdated=True}">
+                    <dxmvvm:Interaction.Behaviors>
+                        <dxmvvm:KeyToCommand Command="{Binding DocumentChangedCommand}" 
+                                             EventName="PreviewKeyDown"/>
+                    </dxmvvm:Interaction.Behaviors>
+                </dxre:RichEditControl>
             </DockPanel>
         </dxlc:LayoutGroup>
     </dxlc:LayoutControl>

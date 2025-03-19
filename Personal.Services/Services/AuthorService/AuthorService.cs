@@ -4,7 +4,8 @@ using Personal.Domain.Entities;
 
 namespace Personal.Services.Services;
 
-public class AuthorService(IBaseRepository<Author> repository, IAuthorRepository authRepository) : BaseService<Author>(repository), IAuthorService
+public class AuthorService(IBaseRepository<Author> repository, IAuthorRepository authRepository)
+    : BaseService<Author>(repository), IAuthorService
 {
     protected override string RepositoryName => "Репозиторий авторов";
     private IAuthorRepository authRepository = authRepository;

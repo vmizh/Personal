@@ -101,6 +101,9 @@ public class BookCardViewModel : ViewModelWindowBase
         DeleteGenreCommand = new DelegateCommand(
             DeleteGenre,
             () => CurrentGenre != null);
+        //DocumentChangedCommand = new DelegateCommand<object>(
+        //    DocumentChanged,
+        //    o => true);
     }
 
 
@@ -126,6 +129,12 @@ public class BookCardViewModel : ViewModelWindowBase
             myCurrentGenre = value;
             RaisePropertyChanged(nameof(CurrentGenre));
         }
+    }
+
+    private void DocumentChanged(object o)
+    {
+        if (Document.State == StateEnum.New) return;
+        Document.State = StateEnum.Changed;
     }
 
     private void DeleteGenre()
@@ -188,6 +197,7 @@ public class BookCardViewModel : ViewModelWindowBase
                 Name = genre.Name
             });
         }
+
         if (DataControl is BookCardView view)
             view.gridGenres.RefreshData();
         if (Document.State != StateEnum.New)
@@ -216,13 +226,19 @@ public class BookCardViewModel : ViewModelWindowBase
     public ICommand<object> AddAuthorCommand { get; private set; }
     public ICommand DeleteAuthorCommand { get; private set; }
     public ICommand AddGenreCommand { get; private set; }
-    public ICommand DeleteGenreCommand { get; }
+    public ICommand DeleteGenreCommand { get; private set; }
+    public ICommand<object> DocumentChangedCommand { get; private set; }
+
 
     public override bool CanDocumentSave => Document != null && !string.IsNullOrWhiteSpace(Document.Name) &&
                                             Document.State != StateEnum.NotChanged;
 
     public override async Task DocumentSaveAsync()
     {
+        Document.TableOfContents = ((BookCardView)DataControl).tableOfContentsEditor.Text;
+        Document.TableOfContentsRtf = string.IsNullOrWhiteSpace(Document.TableOfContents)
+            ? null
+            : ((BookCardView)DataControl).tableOfContentsEditor.RtfText;
         try
         {
             switch (Document.State)

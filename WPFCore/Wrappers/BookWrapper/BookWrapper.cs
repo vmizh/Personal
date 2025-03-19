@@ -57,6 +57,20 @@ public class BookWrapper : BaseWrapper<Book>
         set => SetValue(value);
     }
 
+    [Display(AutoGenerateField = true, Name = "Содержание")]
+    public string? TableOfContents
+    {
+        get => GetValue<string?>();
+        set => SetValue(value);
+    }
+
+    [Display(AutoGenerateField = false, Name = "Содержание(rtf)")]
+    public string? TableOfContentsRtf
+    {
+        get => GetValue<string?>();
+        set => SetValue(value);
+    }
+
     [Display(AutoGenerateField = true, Name = "Авторы")]
     public string Authors
     {

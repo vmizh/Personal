@@ -23,7 +23,7 @@ public class BooksDialogViewModel : ViewModelDialogBase
     {
         myBookRepository = bookRepository;
         myLayoutRepository = layoutRepository;
-        Properties.Id = MenuAndDocumentIds.BookSelectMenuId;
+        Properties.Id = MenuAndDocumentIds.BookSelectId;
         CustomDataUserControl = new BookSelectDialogView();
         try
         {
@@ -48,5 +48,15 @@ public class BooksDialogViewModel : ViewModelDialogBase
     {
         get => GetValue<BookWrapper>();
         set => SetValue(value);
+    }
+
+    protected override async Task OnWindowLoadedAsync()
+    {
+        await base.OnWindowLoadedAsync();
+        if (CustomDataUserControl is BookSelectDialogView view)
+        {
+            view.GridControl.Columns.GetColumnByFieldName("TableOfContents").Visible = false;
+            view.GridControl.Columns.GetColumnByFieldName("Annotation").Visible = false;
+        }
     }
 }

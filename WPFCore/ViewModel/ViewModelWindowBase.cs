@@ -11,7 +11,7 @@ using Personal.WPFClient.Repositories.Layout;
 using WPFCore.Interfaces;
 using WPFCore.Window.Base;
 using WPFCore.Window.Properties;
-using UserControl = System.Windows.Controls.UserControl;
+using UC = System.Windows.Controls.UserControl;
 using Win = Personal.WPFClient.Helper.Windows;
 using WindowStartupLocation = Personal.Domain.Helper.WindowStartupLocation;
 using WindowState = Personal.Domain.Helper.WindowState;
@@ -74,7 +74,6 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
         {
             DataContext = this
         };
-
         FormWindow.Show();
     }
 
@@ -86,7 +85,7 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
 
     public FormProperties Properties { get; }
 
-    public UserControl DataControl { get; protected set; }
+    public UC DataControl { get; protected set; }
 
     protected FormWindowBase FormWindow { get; set; }
 
@@ -274,6 +273,7 @@ public class ViewModelWindowBase : ViewModelBase, IDocumentCommands
 
     #region Properties
 
+    public bool IsOpening { get; set; } = true;
 
     #endregion
 }

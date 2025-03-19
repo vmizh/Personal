@@ -6,8 +6,9 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <DockPanel Style="{StaticResource DXServices}">
         <dxg:GridControl
+            Name="GridControl"
             Style="{StaticResource GridControl.Base}"
             ItemsSource="{Binding Books, NotifyOnSourceUpdated=True}"
             CurrentItem="{Binding CurrentBook, NotifyOnSourceUpdated=True,NotifyOnTargetUpdated=True}"
@@ -17,9 +18,8 @@
             <dxg:GridControl.View>
                 <dxg:TableView
                     Style="{StaticResource TableView.Standart}">
-                
                 </dxg:TableView>
             </dxg:GridControl.View>
         </dxg:GridControl>
-    </Grid>
+    </DockPanel>
 </UserControl>

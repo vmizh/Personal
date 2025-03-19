@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm;
+using DevExpress.Xpf.Editors.Settings;
 using Personal.Domain.Entities;
 using Personal.Domain.Entities.Base;
 using Personal.WPFClient.Helper.Window;
@@ -48,6 +49,25 @@ public class BooksWindowViewModel : ViewModelWindowBase
             FormNameColor = new SolidColorBrush(Colors.Green)
         };
         Properties.Id = MenuAndDocumentIds.BookMenuId;
+        Properties.LeftMenuBar =
+        [
+            new MenuButtonInfo
+            {
+                Alignment = Dock.Right,
+                HAlignment = HorizontalAlignment.Right,
+                Content = Application.Current.Resources["menuOptions"] as ControlTemplate,
+                ToolTip = "Настройки",
+                SubMenu =
+                [
+                    new MenuButtonInfo
+                    {
+                        Image = Application.Current.Resources["imageResetLayout"] as DrawingImage,
+                        Caption = "Переустановить разметку",
+                        Command = OnWindowResetLayoutCommand
+                    }
+                ]
+            }
+        ];
         Properties.RightMenuBar =
         [
             new MenuButtonInfo
@@ -113,16 +133,15 @@ public class BooksWindowViewModel : ViewModelWindowBase
 
     #region Commands
 
-    public ICommand CustomBookSummaryCommand { get; }
     public ICommand UpdateCommand { get; private set; }
 
     private void EditBook()
     {
         var doc = new BookCardViewModel(myAuthorRepository, myBookRepository, myLayoutRepository, myGenreRepository);
-        doc.LoadDocument(CurrentBook);
+        doc.LoadDocument(CurrentBook); 
         doc.Show().ConfigureAwait(true);
+        doc.IsOpening = false;
     }
-
     public ICommand AddCommand { get; private set; }
     public ICommand DeleteCommand { get; private set; }
 
@@ -234,6 +253,24 @@ public class BooksWindowViewModel : ViewModelWindowBase
         catch (Exception ex)
         {
             WindowManager.ShowError(ex);
+        }
+    }
+
+    protected override async Task OnWindowLoadedAsync()
+    {
+        await base.OnWindowLoadedAsync();
+        if (DataControl is BooksView view)
+        {
+            view.GridControl.Columns.GetColumnByFieldName("TableOfContents").Visible = false;
+            var ann = view.GridControl.Columns.GetColumnByFieldName("Annotation");
+            if (ann is not null)
+            {
+                ann.EditSettings = new MemoEditSettings()
+                {
+                    ShowIcon = false,
+                    TextWrapping = TextWrapping.NoWrap
+                };
+            }
         }
     }
 

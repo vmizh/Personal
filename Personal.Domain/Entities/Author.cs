@@ -22,4 +22,6 @@ public class Author : IIdentity
     public DateTime? BirthDate { set; get; }
     public DateTime? DeathDate { set; get; }
     public RefName? Country { set; get; }
+
+    public string? Note { set; get; }
 }

@@ -21,6 +21,7 @@ public class AuthorWrapper(Author model) : BaseWrapper<Author>(model)
         get => GetValue<string>();
         set => SetValue(value);
     }
+    
     [Display(AutoGenerateField = true, Name = "Имя")]
     public string? FirstName
     {
@@ -54,6 +55,12 @@ public class AuthorWrapper(Author model) : BaseWrapper<Author>(model)
     public RefName? Country
     {
         get => GetValue<RefName?>();
+        set => SetValue(value);
+    }
+    [Display(AutoGenerateField = true, Name = "Примечание")]
+    public string? Note
+    {
+        get => GetValue<string>();
         set => SetValue(value);
     }
 }
